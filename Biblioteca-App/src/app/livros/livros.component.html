@@ -1,0 +1,159 @@
+
+<div class="card"> 
+
+<div class="card-header">HBSIS - Biblioteca SPA</div>
+ 
+ <div id="livros_div" class='container'>
+
+
+ <table class="table table-striped table-dark">
+  <thead>
+    <tr><th>Titulo</th>
+      <th scope="col">Autor</th>
+      <th scope="col">Edição</th>
+      <th scope="col">Editora</th>
+      <th scope="col">Tema</th>
+      <th scope="col"> </th> 
+    </tr>
+  </thead>
+  <tbody>
+     <tr *ngFor='let livro of livros' >
+      <th scope="row">{{livro.titulo}}</th>
+      <td>{{livro.autor}}</td>
+      <td>{{livro.edicao}}</td>
+      <td>{{livro.editora}}</td>
+      <td>{{livro.tema}}</td>
+      <td> <button class="btn btn-success" tooltip="Editar" (click)="editarLivro(livro,template)">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button class="btn btn-danger" tooltip="Excluir" (click)="excluirLivro(livro,confirm)">
+              <i class="fa fa-eraser"></i>
+              </button>  
+            </td>
+    </tr> 
+     
+  </tbody>
+</table>
+<div>
+  <button class="btn btn-outline-primary ml-auto" (click)="novoLivro(template)">
+  <i class="fa fa-plus-circle"></i>
+  Adicionar Livro
+  </button>
+</div>
+
+  </div> 
+</div>
+
+
+<div bsModal #template="bs-modal" class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-sizes-name1" class="modal-title pull-left">Livro</h4>
+        <button type="button" class="close pull-right" (click)="template.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup] = "registerForm">
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <label>Titulo</label>
+      <input type="text" class="form-control"
+      [ngClass] = "{'is-invalid': registerForm.get('titulo').errors && registerForm.get('titulo').touched}"
+       formControlName="titulo">
+      <div *ngIf="registerForm.get('titulo').hasError('required') && registerForm.get('titulo').touched" class="invalid-feedback">
+        Titulo invalido
+      </div>
+      <div *ngIf="registerForm.get('titulo').hasError('minlength') && registerForm.get('titulo').touched" class="invalid-feedback">
+        Titulo deve ter no mínimo de 2 caracteres
+      </div>
+      <div *ngIf="registerForm.get('titulo').hasError('maxlength') && registerForm.get('titulo').touched" class="invalid-feedback">
+        Titulo deve ter no máximo de 40 caracteres
+      </div>
+    </div>
+  </div>  
+  <div class="form-row">
+    <div class="form-group col-md-8">
+      <label>Editora</label>
+      <input type="text" class="form-control"
+      [ngClass] = "{'is-invalid': registerForm.get('editora').errors && registerForm.get('editora').touched}"
+       formControlName="editora">
+      <div class="invalid-feedback">
+        Editora invalida
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label>Autor</label>
+      <input type="text" class="form-control"
+      [ngClass] = "{'is-invalid': registerForm.get('autor').errors && registerForm.get('autor').touched}"
+       formControlName="autor">
+      <div class="invalid-feedback">
+        Autor invalido
+      </div>
+    </div>
+  </div>  
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label>Edição</label>
+      <input type="number" class="form-control"
+      [ngClass] = "{'is-invalid': registerForm.get('edicao').errors && registerForm.get('edicao').touched}"
+       formControlName="edicao">
+      <div class="invalid-feedback">
+        Edição invalida
+      </div>
+    </div> 
+    <div class="form-group col-md-6">
+      <label>Tema</label>
+      <select formControlName="tema"  class="form-control">
+        <option value="Aventura">Aventura</option>
+        <option value="Drama">Drama</option>
+        <option value="Fantasia">Fantasia</option>
+        <option value="Ficção Científica">Ficção Científica</option>
+        <option value="Policial">Policial</option>
+        <option value="Romance">Romance</option>
+        <option value="Suspense">Suspense</option>
+        <option value="Terror">Terror</option>
+      </select> 
+    </div>
+  </div> 
+</form>
+      </div>
+      <div class="modal-footer d-flex">      
+        <button class="btn btn-primary ml-auto" [disabled]= "!registerForm.valid" (click)="salvarAlteracao(template)">
+          Salvar Alterações
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+ 
+
+
+<div bsModal #confirm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-sizes-name1">
+	<div class="modal-dialog modal-sm">
+  		<div class="modal-content">
+    		<div class="modal-header">
+      			<h4 class="modal-title pull-left">
+        			Deletando Livro
+      			</h4>
+      			<button type="button" class="close pull-right" (click)="confirm.hide()" aria-label="Close">
+        			<span aria-hidden="true">&times;</span>
+      			</button>
+    		</div>
+    		<div class="modal-body">
+      			<p>{{bodyDeletarLivro}}</p>
+    		</div>    
+    		<div class="modal-footer btn-group d-flex">      
+      			<button type="button" class="btn btn-outline-primary" (click)="confirm.hide()">
+        			CENCELAR
+      			</button>
+      			<button type="button" class="btn btn-outline-danger" (click)="confirmeDelete(confirm)">
+          			DELETAR
+        		</button>
+    		</div>
+  		</div>
+	</div>
+</div>
